@@ -29,10 +29,10 @@ function Move-MouseToPreventSleep {
     Add-Type -AssemblyName System.Windows.Forms
     $pos = [System.Windows.Forms.Cursor]::Position
     for ($i = 0; $i -lt 2; $i++) {
-        [System.Windows.Forms.Cursor]::Position = [System.Drawing.Point]::new($pos.X + 1, $pos.Y + 1)
-        Start-Sleep -Milliseconds 50
+        [System.Windows.Forms.Cursor]::Position = [System.Drawing.Point]::new($pos.X + 25, $pos.Y + 25)
+        Start-Sleep -Milliseconds 200
         [System.Windows.Forms.Cursor]::Position = $pos
-        Start-Sleep -Milliseconds 50
+        Start-Sleep -Milliseconds 200
     }
 }
 
@@ -60,12 +60,19 @@ function Start-AntiIdleLoop {
     )
     Write-Host "已啟動防休眠功能，每 $IntervalSeconds 秒會微動滑鼠。按下 'Q' 鍵停止..."
     while ($true) {
-        if (Test-StopKeyPressed) {
-            Write-Host "`n已停止防休眠功能。"
-            break
+        # 拆分等待時間以保持按鍵監聽的響應性
+        $waited = 0
+        while ($waited -lt $IntervalSeconds) {
+            if (Test-StopKeyPressed) {
+                Write-Host "`n已停止防休眠功能。"
+                return
+            }
+            Start-Sleep -Seconds 1
+            $waited++
         }
+        
+        Write-Host -NoNewline "."
         Move-MouseToPreventSleep
-        Start-Sleep -Seconds $IntervalSeconds
     }
 }
 
