@@ -41,7 +41,7 @@ function Test-StopKeyPressed {
     .SYNOPSIS
         偵測是否有按下停止鍵 (Q鍵)
     #>
-    if ([Console]::KeyAvailable) {
+    while ([Console]::KeyAvailable) {
         $key = [Console]::ReadKey($true)
         if ($key.Key -eq [ConsoleKey]::Q) {
             return $true
@@ -60,6 +60,9 @@ function Start-AntiIdleLoop {
     )
     Write-Host "已啟動防休眠功能，每 $IntervalSeconds 秒會微動滑鼠。按下 'Q' 鍵停止..."
     while ($true) {
+        Write-Host -NoNewline "."
+        Move-MouseToPreventSleep
+        
         # 拆分等待時間以保持按鍵監聽的響應性
         $waited = 0
         while ($waited -lt $IntervalSeconds) {
@@ -70,9 +73,6 @@ function Start-AntiIdleLoop {
             Start-Sleep -Seconds 1
             $waited++
         }
-        
-        Write-Host -NoNewline "."
-        Move-MouseToPreventSleep
     }
 }
 
