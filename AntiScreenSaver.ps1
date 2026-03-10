@@ -28,9 +28,12 @@ function Move-MouseToPreventSleep {
     #>
     Add-Type -AssemblyName System.Windows.Forms
     $pos = [System.Windows.Forms.Cursor]::Position
-    [System.Windows.Forms.Cursor]::Position = [System.Drawing.Point]::new($pos.X + 1, $pos.Y + 1)
-    Start-Sleep -Milliseconds 50
-    [System.Windows.Forms.Cursor]::Position = $pos
+    for ($i = 0; $i -lt 2; $i++) {
+        [System.Windows.Forms.Cursor]::Position = [System.Drawing.Point]::new($pos.X + 1, $pos.Y + 1)
+        Start-Sleep -Milliseconds 50
+        [System.Windows.Forms.Cursor]::Position = $pos
+        Start-Sleep -Milliseconds 50
+    }
 }
 
 function Test-StopKeyPressed {
@@ -53,7 +56,7 @@ function Start-AntiIdleLoop {
         啟動防休眠迴圈
     #>
     param (
-        [int]$IntervalSeconds = 180
+        [int]$IntervalSeconds = 120
     )
     Write-Host "已啟動防休眠功能，每 $IntervalSeconds 秒會微動滑鼠。按下 'Q' 鍵停止..."
     while ($true) {
@@ -74,8 +77,8 @@ function Invoke-MainApp {
     while ($true) {
         $choice = Show-Menu
         if ($choice -eq "1") {
-            # 預設每 3 分鐘 (180 秒) 移動一次
-            Start-AntiIdleLoop -IntervalSeconds 180
+            # 預設每 2 分鐘 (120 秒) 移動兩次
+            Start-AntiIdleLoop -IntervalSeconds 120
         }
         elseif ($choice -eq "2") {
             Write-Host "程式已結束。主人再見！"
