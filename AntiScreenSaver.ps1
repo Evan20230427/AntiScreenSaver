@@ -28,7 +28,7 @@ function Move-MouseToPreventSleep {
     #>
     Add-Type -AssemblyName System.Windows.Forms
     $pos = [System.Windows.Forms.Cursor]::Position
-    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($pos.X + 1, $pos.Y + 1)
+    [System.Windows.Forms.Cursor]::Position = [System.Drawing.Point]::new($pos.X + 1, $pos.Y + 1)
     Start-Sleep -Milliseconds 50
     [System.Windows.Forms.Cursor]::Position = $pos
 }
