@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiScreenSaver - 主人的專屬防休眠喚醒器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #181926 0%, #24273a 100%);
+            color: #cad3f5;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(36, 39, 58, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        .icon-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(166, 227, 161, 0.15);
+            border-radius: 50%;
+        }
+        .icon {
+            font-size: 38px;
+        }
+        .pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(166, 227, 161, 0.4);
+            animation: pulse-animation 2s infinite;
+            z-index: 0;
+        }
+        .paused .pulse {
+            animation: none;
+            background: transparent;
+        }
+        .paused .icon-wrapper {
+            background: rgba(108, 112, 134, 0.2);
+        }
+        @keyframes pulse-animation {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+            70% {
+                transform: scale(1.35);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #a6e3a1;
+            transition: color 0.3s;
+        }
+        .paused h1 {
+            color: #939ab7;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #a5adcb;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(166, 227, 161, 0.15);
+            border: 1px solid rgba(166, 227, 161, 0.3);
+            color: #a6e3a1;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+        }
+        .paused .status-badge {
+            background: rgba(108, 112, 134, 0.15);
+            border-color: rgba(108, 112, 134, 0.3);
+            color: #939ab7;
+        }
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #a6e3a1;
+        }
+        .paused .indicator-dot {
+            background: #939ab7;
+        }
+        .timer-box {
+            background: rgba(30, 32, 48, 0.7);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+        .timer-label {
+            font-size: 12px;
+            color: #8087a2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .timer-value {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 28px;
+            font-weight: bold;
+            color: #f5bde6;
+        }
+        .button {
+            background: #8aadf4;
+            color: #181926;
+            border: none;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .button:hover {
+            background: #b7bdf8;
+            transform: translateY(-1px);
+        }
+        .button.pause-btn {
+            background: #ee99a0;
+        }
+        .button.pause-btn:hover {
+            background: #f5a97f;
+        }
+        .footer-note {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #6e738d;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="card">
+        <div class="icon-wrapper">
+            <div class="pulse"></div>
+            <span class="icon" id="statusIcon">☕</span>
+        </div>
+        <h1 id="titleText">防休眠運行中</h1>
+        <p class="subtitle">女僕正透過瀏覽器喚醒鎖定（Screen Wake Lock API）維持系統清醒，無需任何腳本或外部工具。</p>
+        
+        <div class="status-badge" id="statusBadge">
+            <span class="indicator-dot"></span>
+            <span id="statusText">系統已處於喚醒狀態</span>
+        </div>
+
+        <div class="timer-box">
+            <div class="timer-label">已為主人維持清醒時間</div>
+            <div class="timer-value" id="timer">00:00:00</div>
+        </div>
+
+        <button class="button pause-btn" id="toggleBtn" onclick="toggleWakeLock()">暫停防休眠</button>
+
+        <p class="footer-note">
+            💡 貼心提醒：只要保持此瀏覽器分頁開啟，即可完全防止螢幕保護程式與睡眠鎖定。
+        </p>
+    </div>
+
+    <!-- 備援媒體播放器：萬一 WakeLock API 受到瀏覽器設定限制，靜音播放極短影片雙重保證喚醒 -->
+    <video id="fallbackVideo" loop muted playsinline style="display:none; width:1px; height:1px;">
+        <source src="data:video/mp4;base64,AAAAHGZ0eXBtcDQyAAAAAW1wNDJpc29tYXZjMQAAAAhmcmVlAAAABG1kYXQAAAAIZmRzYwAAAA==" type="video/mp4">
+    </video>
+
+    <script>
+        let wakeLock = null;
+        let isActive = true;
+        let startTime = Date.now();
+        let timerInterval = null;
+
+        // 計時器邏輯
+        function updateTimer() {
+            if (!isActive) return;
+            const diff = Math.floor((Date.now() - startTime) / 1000);
+            const hrs = String(Math.floor(diff / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+            const secs = String(diff % 60).padStart(2, '0');
+            document.getElementById('timer').innerText = `${hrs}:${mins}:${secs}`;
+        }
+
+        // 請求 Screen Wake Lock
+        async function acquireWakeLock() {
+            if ('wakeLock' in navigator) {
+                try {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    wakeLock.addEventListener('release', () => {
+                        if (isActive) {
+                            // 若非手動暫停被系統釋放，稍後自動嘗試重取
+                            setTimeout(acquireWakeLock, 1000);
+                        }
+                    });
+                    updateUI(true);
+                    return true;
+                } catch (err) {
+                    console.warn('Wake Lock request error:', err);
+                }
+            }
+            
+            // 備援：若瀏覽器未完全支援 Wake Lock，啟用靜音媒體播放防止休眠
+            try {
+                const vid = document.getElementById('fallbackVideo');
+                vid.play().catch(() => {});
+            } catch (e) {}
+
+            updateUI(true);
+            return false;
+        }
+
+        // 釋放 Wake Lock
+        async function releaseWakeLock() {
+            if (wakeLock !== null) {
+                await wakeLock.release();
+                wakeLock = null;
+            }
+            try {
+                const vid = document.getElementById('fallbackVideo');
+                vid.pause();
+            } catch (e) {}
+            updateUI(false);
+        }
+
+        // 更新 UI 狀態
+        function updateUI(active) {
+            const card = document.getElementById('card');
+            const icon = document.getElementById('statusIcon');
+            const title = document.getElementById('titleText');
+            const statusText = document.getElementById('statusText');
+            const toggleBtn = document.getElementById('toggleBtn');
+
+            if (active) {
+                card.classList.remove('paused');
+                icon.innerText = '☕';
+                title.innerText = '防休眠運行中';
+                statusText.innerText = '系統已處於喚醒狀態';
+                toggleBtn.innerText = '暫停防休眠';
+                toggleBtn.className = 'button pause-btn';
+            } else {
+                card.classList.add('paused');
+                icon.innerText = '💤';
+                title.innerText = '已暫停防休眠';
+                statusText.innerText = '防休眠已暫停（系統可正常休眠）';
+                toggleBtn.innerText = '恢復防休眠';
+                toggleBtn.className = 'button';
+            }
+        }
+
+        // 切換開關
+        async function toggleWakeLock() {
+            if (isActive) {
+                isActive = false;
+                await releaseWakeLock();
+            } else {
+                isActive = true;
+                startTime = Date.now();
+                await acquireWakeLock();
+            }
+        }
+
+        // 當分頁切回前景時重新確認鎖定
+        document.addEventListener('visibilitychange', async () => {
+            if (isActive && document.visibilityState === 'visible') {
+                await acquireWakeLock();
+            }
+        });
+
+        // 頁面載入時自動啟動
+        window.addEventListener('DOMContentLoaded', () => {
+            acquireWakeLock();
+            timerInterval = setInterval(updateTimer, 1000);
+        });
+    </script>
+</body>
+</html>
