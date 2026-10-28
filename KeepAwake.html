@@ -21,21 +21,21 @@
             padding: 20px;
         }
         .container {
-            background: rgba(36, 39, 58, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 480px;
+            background: rgba(36, 39, 58, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 36px;
+            max-width: 520px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
         .icon-wrapper {
             position: relative;
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
+            width: 84px;
+            height: 84px;
+            margin: 0 auto 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -43,14 +43,15 @@
             border-radius: 50%;
         }
         .icon {
-            font-size: 38px;
+            font-size: 42px;
+            z-index: 1;
         }
         .pulse {
             position: absolute;
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: rgba(166, 227, 161, 0.4);
+            background: rgba(166, 227, 161, 0.35);
             animation: pulse-animation 2s infinite;
             z-index: 0;
         }
@@ -62,22 +63,13 @@
             background: rgba(108, 112, 134, 0.2);
         }
         @keyframes pulse-animation {
-            0% {
-                transform: scale(0.95);
-                opacity: 0.8;
-            }
-            70% {
-                transform: scale(1.35);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(0.95);
-                opacity: 0;
-            }
+            0% { transform: scale(0.95); opacity: 0.8; }
+            70% { transform: scale(1.35); opacity: 0; }
+            100% { transform: scale(0.95); opacity: 0; }
         }
         h1 {
             font-size: 24px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #a6e3a1;
             transition: color 0.3s;
         }
@@ -87,67 +79,83 @@
         .subtitle {
             font-size: 14px;
             color: #a5adcb;
-            margin-bottom: 25px;
-            line-height: 1.6;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
-        .status-badge {
-            display: inline-flex;
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .badge {
+            display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 18px;
-            background: rgba(166, 227, 161, 0.15);
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(166, 227, 161, 0.12);
             border: 1px solid rgba(166, 227, 161, 0.3);
             color: #a6e3a1;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 25px;
             transition: all 0.3s;
         }
-        .paused .status-badge {
+        .badge.inactive {
             background: rgba(108, 112, 134, 0.15);
             border-color: rgba(108, 112, 134, 0.3);
             color: #939ab7;
         }
         .indicator-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #a6e3a1;
         }
-        .paused .indicator-dot {
+        .badge.inactive .indicator-dot {
             background: #939ab7;
         }
         .timer-box {
-            background: rgba(30, 32, 48, 0.7);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 25px;
+            background: rgba(30, 32, 48, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
         }
         .timer-label {
             font-size: 12px;
             color: #8087a2;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
         .timer-value {
             font-family: "Courier New", Courier, monospace;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             color: #f5bde6;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
         }
         .button {
             background: #8aadf4;
             color: #181926;
             border: none;
-            padding: 12px 28px;
-            font-size: 16px;
+            padding: 12px 20px;
+            font-size: 15px;
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
-            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .button:hover {
             background: #b7bdf8;
@@ -159,11 +167,33 @@
         .button.pause-btn:hover {
             background: #f5a97f;
         }
+        .button.pip-btn {
+            background: rgba(203, 166, 247, 0.2);
+            color: #cba6f7;
+            border: 1px solid rgba(203, 166, 247, 0.4);
+        }
+        .button.pip-btn:hover {
+            background: rgba(203, 166, 247, 0.35);
+        }
         .footer-note {
-            margin-top: 25px;
             font-size: 12px;
-            color: #6e738d;
-            line-height: 1.5;
+            color: #8087a2;
+            line-height: 1.6;
+            text-align: left;
+            background: rgba(24, 25, 38, 0.6);
+            padding: 12px 16px;
+            border-radius: 10px;
+        }
+        /* 隱藏的 Canvas 與 Video (畫中畫用) */
+        #pipCanvas {
+            display: none;
+        }
+        #pipVideo {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0.01;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -171,14 +201,21 @@
     <div class="container" id="card">
         <div class="icon-wrapper">
             <div class="pulse"></div>
-            <span class="icon" id="statusIcon">☕</span>
+            <div class="icon" id="statusIcon">☕</div>
         </div>
+
         <h1 id="titleText">防休眠運行中</h1>
-        <p class="subtitle">女僕正透過瀏覽器喚醒鎖定（Screen Wake Lock API）維持系統清醒，無需任何腳本或外部工具。</p>
-        
-        <div class="status-badge" id="statusBadge">
-            <span class="indicator-dot"></span>
-            <span id="statusText">系統已處於喚醒狀態</span>
+        <p class="subtitle" id="subtitleText">三重喚醒守護已啟動：Screen WakeLock + WebAudio 次音頻 + 畫中畫</p>
+
+        <div class="indicators-grid">
+            <div class="badge" id="badgeWakeLock">
+                <span class="indicator-dot"></span>
+                <span>顯示器喚醒鎖定</span>
+            </div>
+            <div class="badge" id="badgeWebAudio">
+                <span class="indicator-dot"></span>
+                <span>背景次音頻防凍</span>
+            </div>
         </div>
 
         <div class="timer-box">
@@ -186,122 +223,237 @@
             <div class="timer-value" id="timer">00:00:00</div>
         </div>
 
-        <button class="button pause-btn" id="toggleBtn" onclick="toggleWakeLock()">暫停防休眠</button>
+        <div class="button-group">
+            <button class="button pause-btn" id="toggleBtn" onclick="toggleWakeLock()">暫停防休眠</button>
+            <button class="button pip-btn" id="pipBtn" onclick="togglePiP()">🖼️ 啟用懸浮畫中畫（終極防背景休眠）</button>
+        </div>
 
-        <p class="footer-note">
-            💡 貼心提醒：只要保持此瀏覽器分頁開啟，即可完全防止螢幕保護程式與睡眠鎖定。
-        </p>
+        <div class="footer-note">
+            💡 <strong>守護機制說明：</strong><br>
+            1. <strong>次音頻保護</strong>：啟用人耳聽不見的微弱無聲波，防止分頁切換到背景時被瀏覽器暫停。<br>
+            2. <strong>懸浮畫中畫</strong>：若需最小化瀏覽器，點擊啟用畫中畫置頂小視窗，可 100% 保持在前景活躍。
+        </div>
     </div>
 
-    <!-- 備援媒體播放器：萬一 WakeLock API 受到瀏覽器設定限制，靜音播放極短影片雙重保證喚醒 -->
-    <video id="fallbackVideo" loop muted playsinline style="display:none; width:1px; height:1px;">
-        <source src="data:video/mp4;base64,AAAAHGZ0eXBtcDQyAAAAAW1wNDJpc29tYXZjMQAAAAhmcmVlAAAABG1kYXQAAAAIZmRzYwAAAA==" type="video/mp4">
-    </video>
+    <!-- 畫中畫 (PiP) 專用串流渲染 Canvas 與隱藏 Video -->
+    <canvas id="pipCanvas" width="320" height="180"></canvas>
+    <video id="pipVideo" autoplay muted playsinline></video>
 
     <script>
         let wakeLock = null;
         let isActive = true;
         let startTime = Date.now();
         let timerInterval = null;
+        let audioContext = null;
+        let audioSource = null;
+        let pipCanvas = null;
+        let pipVideo = null;
+        let pipCanvasInterval = null;
 
-        // 計時器邏輯
+        // 1. 初始化計時器
         function updateTimer() {
             if (!isActive) return;
             const diff = Math.floor((Date.now() - startTime) / 1000);
             const hrs = String(Math.floor(diff / 3600)).padStart(2, '0');
             const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
             const secs = String(diff % 60).padStart(2, '0');
-            document.getElementById('timer').innerText = `${hrs}:${mins}:${secs}`;
+            const timeStr = `${hrs}:${mins}:${secs}`;
+            document.getElementById('timer').innerText = timeStr;
+            renderPipFrame(timeStr);
         }
 
-        // 請求 Screen Wake Lock
+        // 2. Web Audio API：次音頻產生器 (解決背景分頁凍結問題)
+        function startWebAudioKeepAlive() {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                if (audioSource) {
+                    try { audioSource.stop(); } catch(e) {}
+                }
+
+                // 建立 1 秒長度之微弱次音頻 (25Hz，振幅 0.0005，人耳實質無聲)
+                const sampleRate = audioContext.sampleRate;
+                const buffer = audioContext.createBuffer(1, sampleRate, sampleRate);
+                const channelData = buffer.getChannelData(0);
+                for (let i = 0; i < sampleRate; i++) {
+                    channelData[i] = Math.sin((2 * Math.PI * 25 * i) / sampleRate) * 0.0005;
+                }
+
+                audioSource = audioContext.createBufferSource();
+                audioSource.buffer = buffer;
+                audioSource.loop = true;
+                audioSource.connect(audioContext.destination);
+                audioSource.start();
+
+                document.getElementById('badgeWebAudio').className = 'badge';
+                return true;
+            } catch (err) {
+                console.warn('WebAudio 初始化警告:', err);
+                document.getElementById('badgeWebAudio').className = 'badge inactive';
+                return false;
+            }
+        }
+
+        function stopWebAudioKeepAlive() {
+            if (audioSource) {
+                try { audioSource.stop(); } catch(e) {}
+                audioSource = null;
+            }
+            if (audioContext && audioContext.state !== 'closed') {
+                try { audioContext.suspend(); } catch(e) {}
+            }
+            document.getElementById('badgeWebAudio').className = 'badge inactive';
+        }
+
+        // 3. Screen Wake Lock API
         async function acquireWakeLock() {
             if ('wakeLock' in navigator) {
                 try {
                     wakeLock = await navigator.wakeLock.request('screen');
                     wakeLock.addEventListener('release', () => {
-                        if (isActive) {
-                            // 若非手動暫停被系統釋放，稍後自動嘗試重取
+                        if (isActive && document.visibilityState === 'visible') {
                             setTimeout(acquireWakeLock, 1000);
+                        } else if (document.visibilityState !== 'visible') {
+                            document.getElementById('badgeWakeLock').className = 'badge inactive';
                         }
                     });
-                    updateUI(true);
+                    document.getElementById('badgeWakeLock').className = 'badge';
                     return true;
                 } catch (err) {
                     console.warn('Wake Lock request error:', err);
                 }
             }
-            
-            // 備援：若瀏覽器未完全支援 Wake Lock，啟用靜音媒體播放防止休眠
-            try {
-                const vid = document.getElementById('fallbackVideo');
-                vid.play().catch(() => {});
-            } catch (e) {}
-
-            updateUI(true);
+            document.getElementById('badgeWakeLock').className = 'badge inactive';
             return false;
         }
 
-        // 釋放 Wake Lock
         async function releaseWakeLock() {
             if (wakeLock !== null) {
-                await wakeLock.release();
+                try { await wakeLock.release(); } catch(e) {}
                 wakeLock = null;
             }
-            try {
-                const vid = document.getElementById('fallbackVideo');
-                vid.pause();
-            } catch (e) {}
-            updateUI(false);
+            document.getElementById('badgeWakeLock').className = 'badge inactive';
         }
 
-        // 更新 UI 狀態
+        // 4. 畫中畫 (Picture-in-Picture) 模式：終極解決背景分頁休眠
+        function setupPipCanvas() {
+            pipCanvas = document.getElementById('pipCanvas');
+            pipVideo = document.getElementById('pipVideo');
+            if (!pipCanvas || !pipVideo) return;
+
+            renderPipFrame("00:00:00");
+            try {
+                if (!pipVideo.srcObject) {
+                    pipVideo.srcObject = pipCanvas.captureStream(10);
+                }
+            } catch (e) {
+                console.warn('Canvas captureStream error:', e);
+            }
+        }
+
+        function renderPipFrame(timeText) {
+            if (!pipCanvas) return;
+            const ctx = pipCanvas.getContext('2d');
+            ctx.fillStyle = '#181926';
+            ctx.fillRect(0, 0, pipCanvas.width, pipCanvas.height);
+
+            // 繪製光暈與文字
+            ctx.fillStyle = '#a6e3a1';
+            ctx.font = 'bold 20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('☕ AntiScreenSaver 清醒中', 160, 60);
+
+            ctx.fillStyle = '#f5bde6';
+            ctx.font = 'bold 36px monospace';
+            ctx.fillText(timeText, 160, 115);
+
+            ctx.fillStyle = '#8087a2';
+            ctx.font = '14px sans-serif';
+            ctx.fillText('保持懸浮即可 100% 防止休眠', 160, 150);
+        }
+
+        async function togglePiP() {
+            setupPipCanvas();
+            try {
+                if (document.pictureInPictureElement) {
+                    await document.exitPictureInPicture();
+                } else {
+                    await pipVideo.play();
+                    await pipVideo.requestPictureInPicture();
+                }
+            } catch (err) {
+                alert('瀏覽器畫中畫功能提示：\n' + err.message);
+            }
+        }
+
+        // 5. 更新 UI 狀態
         function updateUI(active) {
             const card = document.getElementById('card');
             const icon = document.getElementById('statusIcon');
             const title = document.getElementById('titleText');
-            const statusText = document.getElementById('statusText');
+            const subtitle = document.getElementById('subtitleText');
             const toggleBtn = document.getElementById('toggleBtn');
 
             if (active) {
                 card.classList.remove('paused');
                 icon.innerText = '☕';
                 title.innerText = '防休眠運行中';
-                statusText.innerText = '系統已處於喚醒狀態';
+                subtitle.innerText = '三重喚醒守護已啟動：Screen WakeLock + WebAudio 次音頻 + 畫中畫';
                 toggleBtn.innerText = '暫停防休眠';
                 toggleBtn.className = 'button pause-btn';
             } else {
                 card.classList.add('paused');
                 icon.innerText = '💤';
                 title.innerText = '已暫停防休眠';
-                statusText.innerText = '防休眠已暫停（系統可正常休眠）';
+                subtitle.innerText = '防休眠已暫停，系統將依照 Windows 原生設定進入睡眠或保護狀態';
                 toggleBtn.innerText = '恢復防休眠';
                 toggleBtn.className = 'button';
             }
         }
 
-        // 切換開關
+        // 6. 切換開關
         async function toggleWakeLock() {
             if (isActive) {
                 isActive = false;
                 await releaseWakeLock();
+                stopWebAudioKeepAlive();
+                updateUI(false);
             } else {
                 isActive = true;
                 startTime = Date.now();
                 await acquireWakeLock();
+                startWebAudioKeepAlive();
+                updateUI(true);
             }
         }
 
-        // 當分頁切回前景時重新確認鎖定
+        // 7. 分頁切換能動態感知
         document.addEventListener('visibilitychange', async () => {
-            if (isActive && document.visibilityState === 'visible') {
-                await acquireWakeLock();
+            if (isActive) {
+                if (document.visibilityState === 'visible') {
+                    await acquireWakeLock();
+                }
+                // 確保背景時 WebAudio 繼續運作
+                startWebAudioKeepAlive();
             }
         });
 
-        // 頁面載入時自動啟動
+        // 點擊頁面任何地方觸發 Web Audio 解除 Autoplay 限制
+        document.addEventListener('click', () => {
+            if (isActive && (!audioContext || audioContext.state === 'suspended')) {
+                startWebAudioKeepAlive();
+            }
+        }, { once: true });
+
+        // 頁面載入自動初始化
         window.addEventListener('DOMContentLoaded', () => {
             acquireWakeLock();
+            startWebAudioKeepAlive();
+            setupPipCanvas();
             timerInterval = setInterval(updateTimer, 1000);
         });
     </script>

@@ -1,0 +1,7 @@
+# Build & Debug files
+*.pdb
+*.obj
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
